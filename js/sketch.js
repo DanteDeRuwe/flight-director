@@ -9,6 +9,8 @@ let pitch, roll, yaw;
 window.setup = () => {
   canvas = createCanvas(CANVAS_HTML.clientWidth, CANVAS_HTML.clientHeight);
   canvas.parent("canvas");
+
+  pitch = roll = 0;
 };
 
 /* DRAW */
@@ -20,6 +22,18 @@ window.draw = () => {
   translate(width / 2, height / 2);
   RADIUS = min(height, width) * 0.4;
 
-  pitch = roll = 0;
   new ArtificialHorizon(RADIUS, pitch, roll).draw();
+};
+
+window.mouseWheel = e => {
+  pitch += e.delta / 7000;
+};
+
+window.keyPressed = e => {
+  if (keyCode === LEFT_ARROW) {
+    roll -= PI / 90;
+  }
+  if (keyCode === RIGHT_ARROW) {
+    roll += PI / 90;
+  }
 };

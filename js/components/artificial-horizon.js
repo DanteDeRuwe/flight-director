@@ -1,6 +1,6 @@
-import Circle from "../shapes/circle.js";
 import Cross from "../shapes/cross.js";
-import Arc from "../shapes/arc.js";
+import Quad from "../shapes/quad.js";
+import Square from "../shapes/square.js";
 
 export default class ArtificialHorizon {
   constructor(r, pitch, roll) {
@@ -10,19 +10,32 @@ export default class ArtificialHorizon {
   }
 
   draw() {
+    let screenAngle = (PI / 180) * 25;
+
     //colors
     let lowercolor = { stroke: "#fff", fill: "#AD6B31", strokeWeight: 2 };
     let maincolor = { fill: "#00ADB4", stroke: "#fff", strokeWeight: 2 };
     let crosscolor = { stroke: "#40FC3F", strokeWeight: 3 };
-    let bgcolor = { stroke: "#000", strokeWeight: 4 };
+    let bgcolor = { stroke: "#000", strokeWeight: 20 };
 
     //shapes
-    let lower = new Arc(0, 0, this.r, lowercolor, this.pitch, PI - this.pitch, CHORD);
-    let cross = new Cross(0, 0, this.r * 1.2, this.r * 0.8, crosscolor);
-    let main = new Circle(0, 0, this.r, maincolor);
-    let ring = new Circle(0, 0, this.r, bgcolor);
+    let cross = new Cross(0, 0, this.r, this.r, crosscolor);
+    let upper = new Quad(0, 0, maincolor, [
+      { x: -this.r, y: -this.r },
+      { x: this.r, y: -this.r },
+      { x: this.r, y: this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
+      { x: -this.r, y: -this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
+    ]);
 
-    //draw
-    [main, lower, ring, cross].forEach(shape => shape.draw());
+    let lower = new Quad(0, 0, lowercolor, [
+      { x: -this.r, y: -this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
+      { x: this.r, y: this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
+      { x: this.r, y: this.r },
+      { x: -this.r, y: this.r },
+    ]);
+
+    let outer = new Square(0, 0, this.r + 1, bgcolor);
+
+    [upper, lower, cross, outer].forEach(shape => shape.draw());
   }
 }
