@@ -31,6 +31,6 @@ export default class ArtificialHorizon {
 
     let outer = new Square(0, 0, this.r + 1, bgcolor);
 
-    [upper, lower, cross, outer].forEach(shape => shape.draw());
+    [main, lower, cross, outer].forEach(shape => shape.draw());
   }
 }
