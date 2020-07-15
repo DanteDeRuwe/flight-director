@@ -20,12 +20,7 @@ export default class ArtificialHorizon {
 
     //shapes
     let cross = new Cross(0, 0, this.r, this.r, crosscolor);
-    let upper = new Quad(0, 0, maincolor, [
-      { x: -this.r, y: -this.r },
-      { x: this.r, y: -this.r },
-      { x: this.r, y: this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
-      { x: -this.r, y: -this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
-    ]);
+    let main = new Square(0, 0, this.r, maincolor);
 
     let lower = new Quad(0, 0, lowercolor, [
       { x: -this.r, y: -this.r * Math.tan(-this.roll) + this.r * (this.pitch / screenAngle) },
